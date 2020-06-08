@@ -18,6 +18,8 @@ abstract class Factory
     /**
      * Returns a QueryBuilder object
      *
+     * @param string $table
+     *
      * $return Table
      */
     public static function from($table)
@@ -28,37 +30,57 @@ abstract class Factory
     /**
      * Returns a Filter or FilterGroup
      *
-     * For create a Filter the $data array must be a simple array like: array(<column>, <operator>, <value>).
-     * But for create a FilterGroup the $data array must be a multidimensional array like:
-     * array(array(<column>, <operator>, <value>), array(<column2>, <operator2>, <value2>)) and set up
-     * the group operator
+     * For create a Filter the $data array must be a simple array like:
+     * <code>
+     *      array(<column>, <operator>, <value>);
+     * </code>
+     *
+     * But for create a FilterGroup the operator must be setted up and
+     * $data be a multidimensional array like:
+     *
+     * <code>
+     *      array(
+     *          array(<column>, <operator>, <value>),
+     *          array(<column2>, <operator2>, <value2>)
+     *      );
+     * </code>
      *
      * @param array $data Filter data
-     * @param Operator $operator Group operator
+     * @param Operator $groupOperator Group operator
      * @param bool $negate Negate group flag
      *
      * $return mixed
      */
-    public static function createFilter(array $data, Operator $operator = null, $negate = false)
+    public static function createFilter(array $data, Operator $groupOperator = null, $negate = false)
     {
         $new = function ($args) {
             return new Filter($args[0], $args[1], $args[2]);
         };
 
-        if (is_null($operator)) {
+        if (is_null($groupOperator)) {
             return $new($data);
         }
 
-        return self::fillGroup(new FilterGroup($operator), $data, $new, $negate);
+        return self::fillGroup(new FilterGroup($groupOperator), $data, $new, $negate);
     }
 
     /**
      * Returns a Stats or StatsGroup
      *
-     * For create a Stats the $data array must be a simple array like: array(<column>, <operator>, <value>).
-     * But for create a StatsGroup the $data array must be a multidimensional array like:
-     * array(array(<column>, <operator>, <value>), array(<column2>, <operator2>, <value2>)) and set up
-     * the group operator
+     * For create a Stats the $data array must be a simple array like:
+     * <code>
+     *      array(<column>, <operator>, <value>);
+     * </code>
+     *
+     * But for create a StatsGroup the operator must be setted up and
+     * $data be a multidimensional array like:
+     *
+     * <code>
+     *      array(
+     *          array(<column>, <operator>, <value>),
+     *          array(<column2>, <operator2>, <value2>)
+     *      );
+     * </code>
      *
      * @param array $data Stats data
      * @param Operator $operator Group operator
@@ -84,7 +106,8 @@ abstract class Factory
         $group->negate($negate);
 
         foreach ($data as $args) {
-            $group->add($new($args));
+            $element = ($args instanceof AbsGroup) ? $args : $new($args);
+            $group->add($element);
         }
 
         return $group;

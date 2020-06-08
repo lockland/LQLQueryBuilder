@@ -21,9 +21,11 @@ class Filter implements FilterInterface
      * Example:
      * If you want get hosts without parents you must use a filter like:
      *
+     * <code>
      * GET hosts
      * Columns: name
      * Filter: parents =
+     * </code>
      *
      * @param string $field Table column name
      * @param Operator $operator Logical operator

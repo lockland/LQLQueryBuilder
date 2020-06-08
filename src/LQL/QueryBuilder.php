@@ -47,11 +47,12 @@ class QueryBuilder
 
     protected $format = 'json';
 
-    protected $columnHeaders = 'on';
+    protected $table;
 
     public function __construct($table)
     {
         $this->checkTable($table);
+        $this->table = $table;
         $this->query .= $table;
     }
 
@@ -71,9 +72,9 @@ class QueryBuilder
      *
      * @return $this
      */
-    public function select($columns, $ifs = null)
+    public function select($columns, $ifs = ' ')
     {
-        if (! is_null($ifs)) {
+        if (! is_array($columns)) {
             $columns = explode($ifs, $columns);
         }
 
@@ -109,11 +110,11 @@ class QueryBuilder
      * Add sort criteria to query
      *
      * @param string $column
-     * @param string $order Sort order that must be asc|desc
+     * @param string $order Sort order that must be asc|desc, default: asc
      *
      * @return $this
      */
-    public function sortBy($column, $order)
+    public function sortBy($column, $order = 'asc')
     {
         $this->query .= "\nSort: $column $order";
         return $this;
@@ -124,7 +125,13 @@ class QueryBuilder
      *
      * The array with sort criterias may be either an array with string
      * formated like: "<column> <asc|desc>" or a multidimensional array
-     * like: array(array('column', 'asc|desc'), array('column2', 'asc|desc'))
+     * like:
+     * <code>
+     * array(
+     *      array('column', 'asc|desc'),
+     *      array('column2', 'asc|desc')
+     * )
+     * </code>
      *
      * @param array $sorts Array with sort criteria
      *
@@ -171,8 +178,8 @@ class QueryBuilder
      *
      * It will limit livestatus resultset
      *
-     * $param int $limit Maximum amount of rows
-     * $param int $offset Number of elements to skip, default ZERO
+     * @param int $limit Maximum amount of rows
+     * @param int $offset Number of elements to skip, default ZERO
      *
      * @return $this
      */
@@ -197,16 +204,29 @@ class QueryBuilder
      * Should Format output result
      *
      * @param string $format The output format
-     * @param string $columnHeaders Enable or disable columns header, default 'on'
      *
      * @return $this
      */
-    public function outputFormat($format, $columnHeaders = "on")
+    public function outputFormat($format = "json")
     {
         $this->format = empty($format) ? 'json' : $format;
-        $this->columnHeaders = $columnHeaders;
-
         return $this;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getTable()
+    {
+        return $this->table;
     }
 
     /**
@@ -222,8 +242,9 @@ class QueryBuilder
     public function __toString()
     {
         return  $this->query
-            . "\nOutputFormat: $this->format"
+            . "\nOutputFormat: " . $this->getFormat()
             . "\nResponseHeader: fixed16"
-            . "\nColumnHeaders: $this->columnHeaders";
+            . "\nColumnHeaders: on"
+            . "\n\n";
     }
 }

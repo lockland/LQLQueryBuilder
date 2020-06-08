@@ -14,7 +14,11 @@ class Stats implements StatsInterface
      */
     protected $operators = array(
         '=',
-        '!='
+        '!=',
+        '<=',
+        '>=',
+        '<',
+        '>'
     );
 
     /**
@@ -38,7 +42,12 @@ class Stats implements StatsInterface
     protected function checkOperator($operator)
     {
         if (! in_array($operator->__toString(), $this->operators)) {
-            throw new \InvalidArgumentException('Unsupported operator use "=" or "!="');
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Unsupported operator use "%s"',
+                    implode('" or "', $this->operators)
+                )
+            );
         }
     }
 
@@ -56,7 +65,7 @@ class Stats implements StatsInterface
      *
      * @return Stats
      */
-    public function createFromString($stats)
+    public static function createFromString($stats)
     {
         $args = explode(' ', $stats);
         $operator = new Operator($args[1]);

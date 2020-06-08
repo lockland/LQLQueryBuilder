@@ -2,19 +2,21 @@
 
 namespace LQL\Group;
 
-use LQL\FilterInterface as IFilter;
+use LQL\FilterInterface;
 
 /**
  * Class Filter
  */
-class Filter extends AbsGroup implements IFilter
+class Filter extends AbsGroup implements FilterInterface
 {
-    /**
-     * @see AbsGroup::add()
-     */
-    public function add(IFilter $item)
+
+    public function add($item)
     {
-        return parent::add($item);
+        if ($item instanceof FilterInterface) {
+            return parent::add($item);
+        }
+
+        throw new \InvalidArgumentException('Excepted a ' . FilterInterface::class . ' instance');
     }
 
     protected function getNegateString()

@@ -2,20 +2,20 @@
 
 namespace LQL\Group;
 
-use LQL\StatsInterface as IStats;
+use LQL\StatsInterface;
 
 /**
  * Class Stats
  */
-class Stats extends AbsGroup implements IStats
+class Stats extends AbsGroup implements StatsInterface
 {
-
-    /**
-     * @see AbsGroup::add()
-     */
-    public function add(IStats $item)
+    public function add($item)
     {
-        return parent::add($item);
+        if ($item instanceof StatsInterface) {
+            return parent::add($item);
+        }
+
+        throw new \InvalidArgumentException('Excepted a ' . StatsInterface::class . ' instance');
     }
 
     protected function getNegateString()
