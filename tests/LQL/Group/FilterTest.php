@@ -17,10 +17,11 @@ class FilterTest extends AbsTest
 
     public function __construct()
     {
+        parent::__construct();
         $this->operator = new Operator('and');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filterGroup = new FilterGroup($this->operator);
     }
@@ -31,26 +32,28 @@ class FilterTest extends AbsTest
     }
 
     /**
-     * @testdox Should throw an PHPUnit_Framework_Error for an invalid type
+     * @test
+     * @testdox Should throw an InvalidArgumentException for an invalid type
      */
     public function invalidType()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error');
-
+        $this->expectException(\InvalidArgumentException::class);
         $this->filterGroup->add('');
     }
 
     /**
+     * @test
      * @testdox Should throw an RuntimeException for a group with less than 2 member
      */
     public function checkMinimalLength()
     {
-        $this->setExpectedException('RuntimeException');
+        $this->expectException(\RuntimeException::class);
         $this->filterGroup->add(Filter::createFromString('name = value'));
         $this->filterGroup->__toString();
     }
 
     /**
+     * @test
      * @testdox Should convert object to string
      */
     public function getString()

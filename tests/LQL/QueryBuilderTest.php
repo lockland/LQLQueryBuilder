@@ -9,9 +9,9 @@ class QueryBuilderTest extends AbsTest
 {
     protected $builder;
 
-    protected $suffix = "\nOutputFormat: json\nResponseHeader: fixed16\nColumnHeaders: on";
+    protected $suffix = "\nOutputFormat: json\nResponseHeader: fixed16\nColumnHeaders: on\n\n";
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->builder = new QueryBuilder(QueryBuilder::TABLE_HOSTS);
     }
@@ -22,6 +22,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should create a Querybuilder object for valid tables
      *
      * @dataProvider tables
@@ -55,15 +56,17 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should throw an InvalidArgumentException for a invalid table
      */
     public function invalidTable()
     {
-        $this->setExpectedException('InvalidArgumentException', '[bla] is an unsupported table');
+        $this->expectException('InvalidArgumentException', '[bla] is an unsupported table');
         new QueryBuilder('bla');
     }
 
     /**
+     * @test
      * @testdox Should return the GET line only
      */
     public function getAll()
@@ -75,6 +78,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should define which columns will be returned by Array
      */
     public function selectByArray()
@@ -88,6 +92,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should define which columns will be returned by string
      */
     public function selectByString()
@@ -101,6 +106,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should define which filters will be applied
      */
     public function filterByFilter()
@@ -113,6 +119,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should define which FiltersGroup will be applied
      */
     public function filterByFilterGroup()
@@ -130,6 +137,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should define which stats will be applied
      */
     public function statsForStats()
@@ -142,6 +150,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should define which StatsGroup will be applied
      */
     public function statsForStatsGroup()
@@ -173,6 +182,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should add sort criteria to query
      */
     public function sortBy()
@@ -192,6 +202,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should add a multimensional sort array to query
      */
     public function sortsUsingArray()
@@ -210,6 +221,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should add a sort array to query
      */
     public function sortsUsingStrings()
@@ -225,6 +237,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should Aggregate result stats
      */
     public function aggregateBy()
@@ -244,6 +257,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should add limit and offset token to query, zero for offset value
      */
     public function limitDefaultOffset()
@@ -257,6 +271,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should add limit and offset token to query
      */
     public function limit()
@@ -270,6 +285,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should add authenticated user name token
      */
     public function authUser()
@@ -282,6 +298,7 @@ class QueryBuilderTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should Format output result
      */
     public function outputFormat()
@@ -289,12 +306,13 @@ class QueryBuilderTest extends AbsTest
         $expected = "GET hosts\n"
             . "OutputFormat: bla\n"
             . "ResponseHeader: fixed16\n"
-            . "ColumnHeaders: off";
+            . "ColumnHeaders: on\n\n";
 
-        $this->assertEquals($expected, $this->builder->outputFormat('bla', 'off'));
+        $this->assertEquals($expected, $this->builder->outputFormat('bla'));
     }
 
     /**
+     * @test
      * @testdox Should create a Query object
      */
     public function createQuery()

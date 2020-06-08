@@ -11,6 +11,7 @@ class StatsTest extends AbsTest
 
     public function __construct()
     {
+        parent::__construct();
         $this->operator = new Operator('=');
     }
 
@@ -20,15 +21,18 @@ class StatsTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should throw an exception for a invalid operator
+     * 
      */
     public function invalidOperator()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         new Stats('name', new Operator('~~'), 'value');
     }
 
     /**
+     * @test
      * @testdox Should convert object to a string like 'Stats: <name> <operator[=|!=]> <value>'
      */
     public function getString()
@@ -38,6 +42,7 @@ class StatsTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should create a Stats from a string
      */
     public function createFromString()

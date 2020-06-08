@@ -5,10 +5,11 @@ namespace LQL;
 /**
  * Class FactoryTest
  */
-class FactoryTest extends \PHPUnit_Framework_TestCase
+class FactoryTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
+     * @test
      * @testdox Should return a QueryBuilder Object
      */
     public function createTable()
@@ -17,6 +18,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
      * @testdox Should return a Operator Object
      */
     public function createOperator()
@@ -25,6 +27,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
      * @testdox Should return a Filter Object
      */
     public function createFilter()
@@ -35,6 +38,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
      * @testdox Should return a FilterGroup Object
      */
     public function createFilterGroup()
@@ -52,6 +56,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
      * @testdox Should return a Stats Object
      */
     public function createStats()
@@ -62,6 +67,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
      * @testdox Should return a StatsGroup Object
      */
     public function createStatsGroup()

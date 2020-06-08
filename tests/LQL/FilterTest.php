@@ -12,10 +12,12 @@ class FilterTest extends AbsTest
 
     public function __construct()
     {
+        parent::__construct();
         $this->operator = new Operator('=');
     }
 
     /**
+     * @test
      * @testdox Should construct object
      */
     public function constructor()
@@ -27,6 +29,7 @@ class FilterTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should return a string like 'Filter: <column> <operator> <value>'
      */
     public function getString()
@@ -48,6 +51,7 @@ class FilterTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should create a instance of Filter by a string
      */
     public function namedConstructor()

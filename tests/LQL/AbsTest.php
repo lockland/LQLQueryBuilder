@@ -2,12 +2,13 @@
 
 namespace LQL;
 
-abstract class AbsTest extends \PHPUnit_Framework_TestCase
+abstract class AbsTest extends \PHPUnit\Framework\TestCase
 {
 
     abstract protected function getObject();
 
     /**
+     * @test
      * @testdox Should implement __toString method
      */
     public function isImplementingToString()

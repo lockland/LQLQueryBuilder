@@ -8,6 +8,7 @@ namespace LQL;
 class OperatorTest extends AbsTest
 {
     /**
+     * @test
      * @testdox Should create an Operator instance
      *
      * @dataProvider operators
@@ -47,6 +48,7 @@ class OperatorTest extends AbsTest
     }
 
     /**
+     * @test
      * @testdox Should return the same operator passed on construct
      */
     public function getString()
